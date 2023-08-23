@@ -25,16 +25,18 @@ function createPromise(position, delay) {
   });
 }
 
-function onPromiseCreate(e) {
-  e.preventDefault();
+function onPromiseCreate(evt) {
+  evt.preventDefault();
 
   let valueDelay = Number(refs.delay.value);
   let step = Number(refs.step.value);
   let amount = Number(refs.amount.value);
 
-  for (let i = 1; i <= amount; i += 1) {
-    let promiseDelay = valueDelay + step * i;
 
+  let promiseDelay = valueDelay;
+  
+  for (let i = 1; i <= amount; i += 1) {
+    
     createPromise(i, promiseDelay)
       .then(({ position, delay }) => {
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -42,5 +44,8 @@ function onPromiseCreate(e) {
       .catch(({ position, delay }) => {
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
+    
+    promiseDelay += step;
   }
+
 }
